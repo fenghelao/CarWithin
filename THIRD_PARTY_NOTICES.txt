@@ -9,8 +9,8 @@ components retain their original terms; see LICENSES/GPL-3.0.txt.
 No JVM server, browser viewer or Android code is part of this native app target.
 
 Locally imported accessory credentials are not covered by this source license.
-They are kept in .local, excluded from source control, and included only in local
-builds. No claim of Apple certification or credential redistribution rights is made.
+They are excluded from source control and source archives. Packaged builds may
+include the same separately provided identity resources used by earlier releases. No claim of Apple certification or credential redistribution rights is made.
 
 BigInt v5.4.0, commit 88071df9f27361b52d92f9acea85e8b658af8183
 https://github.com/attaswift/BigInt
@@ -75,3 +75,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+ANT BMS framing and field layout adapt lswlc33/maibms, copyright (c) 2026 lswlc33,
+under the MIT License: https://github.com/lswlc33/maibms
+The complete notice is in App/ANTBMS-LICENSE.txt and is bundled with the app.

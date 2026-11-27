@@ -10,9 +10,19 @@ CarWithin runs CarPlay on the same iPhone that generates its interface. Use CarP
 
 ## Download and install
 
-- [Download from GitHub Releases](https://github.com/xmz28/CarWithin/releases/latest). The current version is **1.0.4 (build 16)**.
-- Download `CarWithin-1.0.4-unsigned.ipa` and sign and install it with an IPA sideloading tool using your own signing setup. Follow any iOS prompts for developer trust or Developer Mode.
+- [Download from GitHub Releases](https://github.com/xmz28/CarWithin/releases/latest). The current version is **1.0.5 (build 17)**.
+- Download `CarWithin-1.0.5-unsigned.ipa` and sign and install it with an IPA sideloading tool using your own signing setup. Follow any iOS prompts for developer trust or Developer Mode.
 - The minimum installation target is iOS/iPadOS 16.0 on arm64; iOS 15 is not supported. Same-device CarPlay, audio, and background behavior still need testing on iOS 16.x hardware. CarWithin uses private iOS interfaces. Compatibility depends on the device, OS version, and signing setup, and OS updates can affect it.
+
+## What is new in 1.0.5
+
+- Added output profiles for ZEEHO SE+ 5/5.5-inch, AE2 Pro 5-inch, and CFMOTO 5/6.2-inch dashboards, with a reorganized output menu.
+- Added optional ANT BMS telemetry and battery cards, disabled by default.
+- Added English app and browser-receiver interfaces; some new dashboard messages still fall back to Chinese.
+- Improved saved Wi-Fi passwords, CarLife discovery and AirPlay recovery, and added supporter and contributor views.
+- Added Feedback & Suggestions between Diagnostics and experiments and About.
+
+The maintainer checked existing functionality for regressions. The new ZEEHO, CFMOTO and ANT BMS paths still need corresponding hardware testing by the maintainer; builds and simulated protocol tests do not establish compatibility with every model.
 
 ## Quick start
 
@@ -76,15 +86,25 @@ Fixed display sizes support common landscape and portrait aspect ratios.
 
 ### ZEEHO AE4 MAX2+ 6.2-inch display
 
-Connect the iPhone to the instrument Wi-Fi, select the matching preset and choose ZEEHO 6.2-inch under Current output. Open projection on the instrument, then start CarPlay. The default instrument IP is 192.168.0.1. Video uses H.264 at 1024×480 and up to 25 fps. Audio plays through the iPhone or Bluetooth. Operate CarPlay on the phone.
+Connect the iPhone to the instrument Wi-Fi, select the matching preset and choose ZEEHO 6.2-inch under Current output. Open projection on the instrument, then start CarPlay. Instrument IP discovery is enabled by default; turn it off under Output settings to use the retained manual address. Video uses H.264 at 1024×480 and up to 25 fps. Audio plays through the iPhone or Bluetooth. Operate CarPlay on the phone.
 
 One instrument was tested successfully, including screen lock. Other models and long sessions require further testing.
+
+### ZEEHO AE2 Pro 5-inch display
+
+Connect the iPhone to the dashboard Wi-Fi, select the matching preset, then choose `极核 AE2 Pro 5 寸` under Current output. Start projection on the dashboard and start CarPlay in the app. The default dashboard address is `192.168.0.1`, configurable in Output settings. Video uses H.264 at the size reported by the dashboard, up to 25 fps. Projection was confirmed on one AE2 Pro.
 
 ### Additional dashboard support
 
 - **Ninebot 7-inch:** Connect to the dashboard Wi-Fi, select this output, start CarPlay, then enable navigation casting in Ninebot app and keep it running in the background. Display was confirmed on one dashboard.
-- **Ninebot 4.3-inch (experimental):** Uses the N1 90 protocol, with default address `192.168.169.1`. Follow the same startup order. Physical dashboard testing is pending.
+- **Ninebot 4.3-inch:** Uses the N1 90 protocol, with default address `192.168.169.1`. Follow the same startup order. Physical dashboard testing is pending.
 - **AirPlay (experimental):** Startup and reconnection may fail, and the receiver may retain the last picture after stopping.
+
+### ZEEHO SE+ 5/5.5-inch display
+
+Choose the separate SE+ output. The 5/5.5-inch label names the intended profile family: one profile negotiates the reported pixel dimensions, rather than two independently verified physical-size implementations. Both ZEEHO modes offer automatic IP discovery and retain manual addresses. The 6.2-inch mode keeps its isolated original handshake/output at 1024×480 and 25 FPS.
+
+SE+ offers a 1600×770 wide canvas or 800×480 compatibility canvas, plus 25/30/60 FPS targets. Start with 30 FPS and default compatibility transcoding. H.264 passthrough is opt-in and still needs instrument testing, as do sustained 60 FPS and lock-screen stability. Sent FPS is not panel refresh. The sound page provides the system audio route picker. See [implementation and validation scope](docs/zeeho-seplus-experimental.md).
 
 ### Ninebot 5-inch display
 
@@ -105,6 +125,24 @@ This mode targets the **TL-DASH-V2** instrument display. Other models and firmwa
 The instrument receives 480×272 video at up to 20 FPS. Audio uses the iPhone's current speaker or Bluetooth route. The instrument does not send touch input back; operate CarPlay on the iPhone. Matching display parameters are applied automatically; switching to another output restores its previous settings.
 
 Video and recovery after locking the iPhone have been confirmed on one instrument. If locking invalidates the decoder, CarWithin rebuilds it from a keyframe and resumes; a brief pause may occur. Extended playback, repeated locking, network-loss recovery, and other instruments have not all been verified.
+
+### CFMOTO 5-inch and 6.2-inch dashboards
+
+Join the dashboard Wi-Fi on the iPhone, select the corresponding CFMOTO output, enable dashboard projection and start CarPlay. Set the dashboard address in Output settings. Leaving it blank tries `.1` on the local subnet; this is a guess, not a discovered DHCP gateway. Enter the real address if it fails. A separate PXC session uses TCP 10920/10921/10922 and probe port 10930, with negotiated, aligned video dimensions. Audio and controls remain on the iPhone or its Bluetooth device. The maintainer has no CFMOTO dashboard, so connection, video and background behavior need hardware testing.
+
+### ANT BMS battery cards
+
+Enable reading under Settings → Battery & BMS and explicitly select the Bluetooth device. The feature is off by default and only queries telemetry; it does not change battery parameters. Configure fields, position, size and transparency for charge level, voltage, current, power, temperature and cell-voltage spread. Old values are hidden after five seconds without valid new data.
+
+Cards currently appear in the phone CarPlay preview and Ninebot 5/7-inch video. Ninebot 4.3-inch, browser and other dashboard outputs do not include the card in this version. The maintainer has no ANT BMS hardware; connectivity, background behavior and model compatibility need testing. See [implementation scope](docs/ant-bms-display.md).
+
+## Feedback, support and contributors
+
+Settings → Feedback & Suggestions opens the [feedback survey](https://v.wjx.cn/vm/e5IX6eZ.aspx). Copy diagnostic logs from Diagnostics and experiments → Logs → Copy logs, and check for unrelated personal information before submitting them.
+
+About → Appreciation & Support lists supporters and development/testing contributions; Buy me a coffee provides Alipay and WeChat options. Support is optional and does not affect features, updates or adaptation priorities.
+
+Code contributions in this release: [yiquchangge1](https://github.com/yiquchangge1) (SE+), [武汉 / yuliang-shuji](https://github.com/yuliang-shuji) (AE2 Pro), [Boos4721](https://github.com/Boos4721) (ANT BMS), and [扫毒单位 / SDDW007](https://github.com/SDDW007) (CFMOTO). Original commits and GitHub authorship are preserved.
 
 ## Check for updates and install a newer version
 

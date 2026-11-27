@@ -213,9 +213,9 @@ enum NinebotProtocolError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .incompleteAVCCLength: "H.264 长度前缀不完整"
-        case .unknownH264Framing: "未知 H.264 封装"
-        case .invalidJPEG: "JPEG 数据不完整"
+        case .incompleteAVCCLength: CWL("H.264 长度前缀不完整")
+        case .unknownH264Framing: CWL("未知 H.264 封装")
+        case .invalidJPEG: CWL("JPEG 数据不完整")
         }
     }
 }

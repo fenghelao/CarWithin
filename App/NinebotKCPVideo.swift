@@ -103,9 +103,9 @@ final class NinebotKCPVideo {
 
         var errorDescription: String? {
             switch self {
-            case .setup: "无法创建七寸 KCP 视频连接"
-            case .enqueue: "七寸 KCP 视频分包入队失败"
-            case .noAcknowledgement: "七寸仪表 8 秒内未确认 KCP 视频数据，请检查仪表 Wi-Fi 和投屏状态"
+            case .setup: CWL("无法创建七寸 KCP 视频连接")
+            case .enqueue: CWL("七寸 KCP 视频分包入队失败")
+            case .noAcknowledgement: CWL("七寸仪表 8 秒内未确认 KCP 视频数据，请检查仪表 Wi-Fi 和投屏状态")
             }
         }
     }
